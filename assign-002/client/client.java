@@ -16,24 +16,20 @@ public class client {
     udpSocket.send(packet);
     System.out.println("Sending UDP packet: "+info);
 
-    // Opens TCP socket waiting for the server connection
-    ServerSocket serverSocket = null;
-    try { serverSocket = new ServerSocket(2000); }
-    catch (IOException e) {
-      System.err.println("Could not listen on port 2000.");
-      System.exit(1);
-    }
-    Socket clientSocket = null;
-    try { clientSocket = serverSocket.accept(); }
-    catch (IOException e) {
-      System.err.println("Accept failed");
-      System.exit(1);
-    }
+    		Socket socketC = null;
+        try {
+            socketC = new Socket(InetAddress.getLocalHost(),2000);
+            System.out.println("Demande de connexion");
+        }catch(UnknownHostException e) {
+        e.printStackTrace();
+    	}catch (IOException e) {
+    	e.printStackTrace();
+    	}
 
     // Receiving server response
-    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+    PrintWriter out = new PrintWriter(socketC.getOutputStream(), true);
     PrintWriter fileOutput = new PrintWriter("new_file.txt", "UTF-8");
-    BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+    BufferedReader in = new BufferedReader(new InputStreamReader(socketC.getInputStream()));
     String inputLine, outputLine;
     System.out.println("Receiving file...");
     while ((inputLine = in.readLine()) != null) {
@@ -43,6 +39,6 @@ public class client {
     }
     System.out.println("File saved as: new_file.txt");
     out.close(); in.close(); fileOutput.close();
-    clientSocket.close(); serverSocket.close();
+    socketC.close();
   }
 }

@@ -23,17 +23,20 @@ public class server {
     Socket echoSocket = null;
     PrintWriter out = null;
     BufferedReader in = null;
+    // Opens TCP socket waiting for the server connection
+    ServerSocket serverSocket = null;
+    Socket clientSocket = null;
     try {
-      echoSocket = new Socket(info[1], Integer.parseInt(info[2].trim()));
-      out = new PrintWriter(echoSocket.getOutputStream(), true);
-      in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
-    } catch (UnknownHostException e) {
-      System.err.println("Don't know about host: "+info[1]);
-      System.exit(1);
-    } catch (IOException e) {
-      System.err.println("Couldn't get I/O for the connection to: "+info[1]);
-      System.exit(1);
-    }
+	            serverSocket = new ServerSocket(2000);
+	            System.out.println("[Server] listening to port "+serverSocket.getLocalPort());
+	            clientSocket = serverSocket.accept();
+	            System.out.println("Client connected");
+	        } catch (IOException e) {
+	            System.out.println("Exception caught when trying to listen on port "
+	                + 2000 + " or listening for a connection");
+	            System.out.println(e.getMessage());
+	        }
+
 
     // Load and send file via TCP connection
     System.out.println("Opening file: "+info[0]);
@@ -41,6 +44,7 @@ public class server {
     String fileInput;
     System.out.println("Sending file: "+info[0]);
     while ((fileInput = fileReader.readLine()) != null) {
+      System.out.println("La file ..."+fileInput);
       out.println(fileInput);
       System.out.println("Line received by client: " + in.readLine() + "... OK");
     }
