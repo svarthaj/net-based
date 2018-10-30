@@ -20,7 +20,6 @@ public class server {
     String info[] = dataString.split("\\+");
 
     // Establish TCP connection with the client
-    Socket echoSocket = null;
     PrintWriter out = null;
     BufferedReader in = null;
     // Opens TCP socket waiting for the server connection
@@ -31,6 +30,8 @@ public class server {
 	            System.out.println("[Server] listening to port "+serverSocket.getLocalPort());
 	            clientSocket = serverSocket.accept();
 	            System.out.println("Client connected");
+              out = new PrintWriter(clientSocket.getOutputStream(), true);
+              in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 	        } catch (IOException e) {
 	            System.out.println("Exception caught when trying to listen on port "
 	                + 2000 + " or listening for a connection");
@@ -42,6 +43,7 @@ public class server {
     System.out.println("Opening file: "+info[0]);
     BufferedReader fileReader = new BufferedReader(new FileReader(info[0]));
     String fileInput;
+
     System.out.println("Sending file: "+info[0]);
     while ((fileInput = fileReader.readLine()) != null) {
       System.out.println("La file ..."+fileInput);
@@ -50,6 +52,6 @@ public class server {
     }
     System.out.println("Sending file complete");
     out.close(); in.close();
-    fileReader.close(); echoSocket.close();
+    fileReader.close(); 
   }
 }
