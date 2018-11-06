@@ -113,12 +113,12 @@ public class client {
         }
       }
       //Since we are at the DOCTYPE or <HTML> line we have to write it down before going to next line
-      htmlOutput.write(response.getBytes());
+      htmlOutput.write((response+"\n").getBytes());
       System.out.println(response);
       //We read the informations and write the bytes in an HTML outputfile
       while ((response = inPrime.readLine()) != null) {
         System.out.println(response);
-        htmlOutput.write(response.getBytes());
+        htmlOutput.write((response+"\n").getBytes());
       }
       htmlOutput.close();
     }else if(response.contains("image/jpeg")){      
