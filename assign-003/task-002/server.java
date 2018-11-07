@@ -49,7 +49,7 @@ public class server {
       clientOut.flush();
       fileIn.close();
     } catch (FileNotFoundException e) {
-      // If cannot open the file send a 404 error
+      // If cannot open the file send a 404 error page
       clientOut.write(new String("HTTP/1.1 404 Not Found\r\n\r\n <!DOCTYPE html>\r\n<html>\r\n<head>\r\n<title>404</title>\r\n</head>\r\n<body>\r\n<h1>404 - Object not found</h1>\r\r</body>\r\n</html>").getBytes(Charset.forName("ISO-8859-1")));
       clientOut.flush();
     }
