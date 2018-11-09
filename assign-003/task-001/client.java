@@ -69,13 +69,17 @@ public class client {
     byte[] header = new byte[messageIndex];
     byte[] message = new byte[result.length - messageIndex];
     System.arraycopy(result, 0, header, 0, messageIndex);
-    System.arraycopy(result, messageIndex, message, 0, result.length-messageIndex);
+    //System.arraycopy(result, messageIndex, message, 0, result.length-messageIndex);
+    //changed it by message.length since it's the same value because message is made from result.length-messageIndex
+    System.arraycopy(result, messageIndex, message, 0, message.length);
 
     // Parse the header to find out the content type and save the message body accordingly
     String headerStr = new String(header, Charset.forName("ISO-8859-1"));
+    // check for 404
+    // ifolderlinks.ru/404?utm_source=CMblog&utm_medium=link&utm_campaign=funny404pages
+    if(headerStr.contains("404")) { System.err.println("404 - Object not found"); }
     if(headerStr.contains("text/html")) {
-      // check for 404
-      if (headerStr.contains("404")) { System.err.println("404 - Object not found"); }
+
       //save html
       FileOutputStream fileOut = new FileOutputStream("new_html.html");
       fileOut.write(message);
