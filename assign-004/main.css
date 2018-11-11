@@ -1,0 +1,17 @@
+form {
+    background-color: rgb(188, 60, 182);
+    text-align: center;
+    display: block;
+    align-items: center;
+    align-content: center;   
+    display: table; 
+}
+h1 {
+  text-align: center;
+}
+p     { display: table-row;  }
+label { display: table-cell; }
+input { 
+  display: table-cell;
+  margin-left: 0pt;
+}
