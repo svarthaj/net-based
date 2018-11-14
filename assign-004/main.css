@@ -15,3 +15,12 @@ input {
   display: table-cell;
   margin-left: 0pt;
 }
+div{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:200px; 
+  height:200px; /* A toi de donner la bonne hauteur */
+  margin-left:-150px; /* -largeur/2 */
+  margin-top:-200px; /* -hauteur/2 */
+}
