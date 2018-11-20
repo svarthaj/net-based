@@ -12,8 +12,38 @@ fs.readFile('./index.html', function (err, html) {
             body += chunk.toString(); // convert Buffer to string
           });
           req.on('end', () => {
-            // async file read
+            // sync file read
+            /*var contents = fs.readFileSync('./phonebook.txt');
+            console.log(contents.toString());
+            var query = parse(body) 
+                catalogSync= parseCSV(contents.toString());
+                for (var i=0; i<catalogSync.length; i++) {
+                  if (query.lastname === catalogSync[i].lname &&
+                      query.firstname === catalogSync[i].fname) {
+                        res.write(
+                          ` <!DOCTYPE html>
+                            <html>
+                            <body>
+                            <h2> ${catalogSync[i].fname} ${catalogSync[i].lname} phone is ${catalogSync[i].phone}</h2>
+                            <button type="button" onclick="history.back()">Go Back</button>
+                            </body>
+                            </html>`);
+                        res.end();
+                  }
+                }
+                // if user was not found, send error
+                res.end(` <!DOCTYPE html>
+                  <html>
+                  <body>
+                  <h2>User Not Found</h2>
+                  <button type="button" onclick="history.back()">Go Back</button>
+                  </body>
+                  </html>`);
+              });
+          }*/
+
             fs.readFile('./phonebook.txt', function (err, phones) {
+             console.log(phones.toString());
               // Parse the data from txt file into object array and compare with queried data
               if (err) throw err;
               var query = parse(body), // parse query body into object
@@ -42,12 +72,13 @@ fs.readFile('./index.html', function (err, html) {
                 </html>`);
             });
           });
-      }
-      else {
+        }              
+        else {
         res.writeHeader(200, {"Content-Type": "text/html"});
         res.write(html);
         res.end();
-      }
+      } 
+      
   }).listen(8080, function() {
     console.log('Server running at http://localhost:8080');
   });
