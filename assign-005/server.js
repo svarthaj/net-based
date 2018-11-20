@@ -1,7 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const { parse } = require('querystring');
-
+var time = require('node-tictoc'); // you have to install it with npm install node-tictoc
 fs.readFile('./index.html', function (err, html) {
   if (err) throw err;
   http.createServer((req, res) => {
@@ -13,8 +13,11 @@ fs.readFile('./index.html', function (err, html) {
           });
           req.on('end', () => {
             // sync file read
-            /*var contents = fs.readFileSync('./phonebook.txt');
-            console.log(contents.toString());
+            /*
+            time.tic();
+            var contents = fs.readFileSync('./phonebook.txt');
+            var timeSync = time.toct();
+            console.log(timeSync.ms);
             var query = parse(body) 
                 catalogSync= parseCSV(contents.toString());
                 for (var i=0; i<catalogSync.length; i++) {
@@ -31,6 +34,7 @@ fs.readFile('./index.html', function (err, html) {
                         res.end();
                   }
                 }
+                
                 // if user was not found, send error
                 res.end(` <!DOCTYPE html>
                   <html>
@@ -40,10 +44,11 @@ fs.readFile('./index.html', function (err, html) {
                   </body>
                   </html>`);
               });
-          }*/
-
+              
+          }
+          */
+            time.tic();
             fs.readFile('./phonebook.txt', function (err, phones) {
-             console.log(phones.toString());
               // Parse the data from txt file into object array and compare with queried data
               if (err) throw err;
               var query = parse(body), // parse query body into object
@@ -62,6 +67,7 @@ fs.readFile('./index.html', function (err, html) {
                       res.end();
                 }
               }
+              
               // if user was not found, send error
               res.end(` <!DOCTYPE html>
                 <html>
@@ -71,6 +77,8 @@ fs.readFile('./index.html', function (err, html) {
                 </body>
                 </html>`);
             });
+            var timeAssync = time.toct();
+            console.log(timeAssync.ms);
           });
         }              
         else {
