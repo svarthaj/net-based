@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	    xmlns:xml="http://www.w3.org/XML/1998/namespace" >
+
+<xsd:element name="bank">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="accounts" minOccurs="1" maxOccurs="1">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="savings_accounts" minOccurs="1" maxOccurs="1">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="savings_account" minOccurs="1" maxOccurs="unbounded">
+                                        <xsd:complexType>
+                                            <xsd:sequence>
+                                                <xsd:element name="balance">
+                                                    <xsd:simpleType>
+                                                        <xsd:restriction base="xsd:integer">
+                                                            <xsd:minInclusive value="-5000"/>
+                                                        </xsd:restriction>
+                                                    </xsd:simpleType>
+                                                </xsd:element>
+                                            </xsd:sequence>
+                                            
+                                        <xsd:attribute name="id" type="xsd:string" use="required"/> 
+                                        <xsd:attribute name="interest" type="xsd:decimal" use="required"/>
+                                        </xsd:complexType>
+                                        <xsd:unique name="savings_unique">
+                                            <xsd:selector xpath="savings_account"/>
+                                            <xsd:field xpath="@id"/>
+                                        </xsd:unique>
+                                    </xsd:element>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="checking_accounts" minOccurs="1" maxOccurs="1">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="checking_account" minOccurs="1" maxOccurs="unbounded">
+                                        <xsd:complexType>
+                                            <xsd:sequence>
+                                                <xsd:element name="balance">
+                                                    <xsd:simpleType>
+                                                        <xsd:restriction base="xsd:integer">
+                                                            <xsd:minInclusive value="-5000"/>
+                                                        </xsd:restriction>
+                                                    </xsd:simpleType>
+                                                </xsd:element>
+                                            </xsd:sequence>
+                                        <xsd:attribute name="id" type="xsd:string" use="required"/> 
+                                        </xsd:complexType>
+                                        <xsd:unique name="checking_unique">
+                                            <xsd:selector xpath="checking_account"/>
+                                            <xsd:field xpath="@id"/>
+                                        </xsd:unique>
+                                    </xsd:element>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+                <xsd:key name="idKey">
+                    <xsd:selector xpath="./bank/accounts/savings_accounts/savings_account|./bank/accounts/checking_accounts/checking_account"/>
+                    <xsd:field xpath="@id"/>
+                </xsd:key>
+                <xsd:keyref name="foreignKey" refer="idKey">
+                    <xsd:selector xpath="./bank/customer_accounts"/>
+                    <xsd:field xpath="@ac_id"/>
+                </xsd:keyref>
+            </xsd:element>
+            <xsd:element name="customers" minOccurs="1" maxOccurs="1">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="customer" minOccurs="1" maxOccurs="unbounded">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="name" type="xsd:string"/>
+                                    <xsd:element name="address" type="xsd:string" />
+                                </xsd:sequence>
+                            <xsd:attribute name="id" type="xsd:ID" use="required" />
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="customer_accounts" minOccurs="1" maxOccurs="1">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="customer_account" minOccurs="1" maxOccurs="unbounded">
+                            <xsd:complexType>
+                                <xsd:attribute name="c_id" type="xsd:IDREF" use="required" />
+                                <!-- add a ref to ac_id  -->
+                                <xsd:attribute name="ac_id" use="required" />
+                            </xsd:complexType>
+                            
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+                <xsd:unique name="ac_unique">
+                                            <xsd:selector xpath="customer_account"/>
+                                            <xsd:field xpath="@ac_id"/>
+                </xsd:unique>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:element>
+
+</xsd:schema>
