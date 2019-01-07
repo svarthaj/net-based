@@ -21,15 +21,14 @@
                                                         </xsd:restriction>
                                                     </xsd:simpleType>
                                                 </xsd:element>
-                                            </xsd:sequence>
-                                            
+                                            </xsd:sequence>                                            
                                         <xsd:attribute name="id" type="xsd:string" use="required"/> 
                                         <xsd:attribute name="interest" type="xsd:decimal" use="required"/>
                                         </xsd:complexType>
-                                        <xsd:unique name="savings_unique">
+                                        <!--<xsd:unique name="savings_unique">
                                             <xsd:selector xpath="savings_account"/>
-                                            <xsd:field xpath="@id"/>
-                                        </xsd:unique>
+                                            <xsd:field xpath="@id"/> 
+                                        </xsd:unique>-->
                                     </xsd:element>
                                 </xsd:sequence>
                             </xsd:complexType>
@@ -50,10 +49,10 @@
                                             </xsd:sequence>
                                         <xsd:attribute name="id" type="xsd:string" use="required"/> 
                                         </xsd:complexType>
-                                        <xsd:unique name="checking_unique">
+                                       <!-- <xsd:unique name="checking_unique">
                                             <xsd:selector xpath="checking_account"/>
-                                            <xsd:field xpath="@id"/>
-                                        </xsd:unique>
+                                            <xsd:field xpath="@id"/> 
+                                        </xsd:unique>-->
                                     </xsd:element>
                                 </xsd:sequence>
                             </xsd:complexType>
@@ -90,20 +89,18 @@
                         <xsd:element name="customer_account" minOccurs="1" maxOccurs="unbounded">
                             <xsd:complexType>
                                 <xsd:attribute name="c_id" type="xsd:IDREF" use="required" />
-                                <!-- add a ref to ac_id  -->
                                 <xsd:attribute name="ac_id" use="required" />
-                            </xsd:complexType>
-                            
+                            </xsd:complexType>                            
                         </xsd:element>
                     </xsd:sequence>
                 </xsd:complexType>
+                <!--  key and keyref and change the ID IDREF by it to make it easier for next assignments -->
                 <xsd:unique name="ac_unique">
-                                            <xsd:selector xpath="customer_account"/>
-                                            <xsd:field xpath="@ac_id"/>
+                    <xsd:selector xpath="customer_account"/>
+                    <xsd:field xpath="@ac_id"/>
                 </xsd:unique>
             </xsd:element>
         </xsd:sequence>
     </xsd:complexType>
 </xsd:element>
-
 </xsd:schema>
