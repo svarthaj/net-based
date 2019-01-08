@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+						xmlns:xml="http://www.w3.org/XML/1998/namespace" 
+						xmlns:c="http://acme-bank.com/bank/checking"
+						xmlns:s="http://acme-bank.com/bank/savings"
+						>
+<xsd:import namespace="http://acme-bank.com/bank/savings" schemaLocation="savings.xsd" />
+<xsd:import namespace="http://acme-bank.com/bank/checking" schemaLocation="checking.xsd" />
+
+	<!-- Used substitutionGroup to represent the two kinds of accounts -->
+  <xsd:element name="bank">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="accounts" minOccurs="1" maxOccurs="1">
+					
+							<!-- Reference to the account group defined before -->
+							<xsd:complexType>
+								<xsd:choice>
+									<xsd:element ref="c:checking_account"/>
+									<xsd:element ref="s:savings_account" />
+								</xsd:choice>
+							</xsd:complexType>
+						
+					<!-- I'm not sure how to deal with keys and substitutionGroup -->
+					<xsd:key name="idKey">
+						<xsd:selector xpath="./bank/accounts/savings_account|./bank/accounts/checking_account"/>
+						<xsd:field xpath="@id"/>
+					</xsd:key>
+					<xsd:keyref name="foreignKey" refer="idKey">
+						<xsd:selector xpath="./bank/customer_accounts"/>
+						<xsd:field xpath="@ac_id"/>
+					</xsd:keyref>
+				</xsd:element>
+				<xsd:element name="customers" minOccurs="1" maxOccurs="1">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="customer" minOccurs="1" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="name" type="xsd:string"/>
+										<xsd:element name="address" type="xsd:string" />
+									</xsd:sequence>
+									<xsd:attribute name="id" type="xsd:string" use="required" />
+                            </xsd:complexType>
+                            <xsd:key name="customerIdKey">
+                                <xsd:selector xpath="./bank/customers/customer"/>
+                                <xsd:field xpath="@id"/>
+                            </xsd:key>
+                            <xsd:keyref name="foreignCustomerKey" refer="customerIdKey">
+                                <xsd:selector xpath="./bank/customer_accounts"/>
+                                <xsd:field xpath="@c_id"/>
+                            </xsd:keyref>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="customer_accounts" minOccurs="1" maxOccurs="1">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="customer_account" minOccurs="1" maxOccurs="unbounded">
+                            <xsd:complexType>
+                                <xsd:attribute name="c_id" use="required" />
+                                <xsd:attribute name="ac_id" use="required" />
+                            </xsd:complexType>                            
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+					<!--  key and keyref and change the ID IDREF by it to make it easier for next assignments -->
+					<xsd:unique name="ac_unique">
+						<xsd:selector xpath="customer_account"/>
+						<xsd:field xpath="@ac_id"/>
+					</xsd:unique>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

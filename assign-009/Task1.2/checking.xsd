@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+						xmlns:xml="http://www.w3.org/XML/1998/namespace"
+						targetNamespace="http://acme-bank.com/bank/checking" >
+<xsd:element name="checking_account">
+	<xsd:complexType>
+		<xsd:sequence>
+			<xsd:element name="balance">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:integer">
+						<xsd:minInclusive value="-5000"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="xsd:string" use="required"/>
+	</xsd:complexType>
+</xsd:element>
+</xsd:schema>
