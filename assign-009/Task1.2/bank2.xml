@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bank xmlns:c="http://acme-bank.com/bank/checking"
-			xmlns:s="http://acme-bank.com/bank/savings"
-      >
+<bank xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://acme-bank.com/bank bank-schema.xsd">
   
   <accounts>
-    <savings_account id="a1" interest="0.03">
+    <savings_account id="a1" interest="0.03" xmlns="http://acme-bank.com/bank/savings">
       <balance>2500</balance>
     </savings_account>   
-    <savings_account id="a2" interest="0.03">
+    <savings_account id="a2" interest="0.03" xmlns="http://acme-bank.com/bank/savings">
       <balance>15075</balance>
     </savings_account>  
-    <checking_account id="a3">
+    <checking_account id="a3" xmlns="http://acme-bank.com/bank/checking">
       <balance>4025</balance>
     </checking_account>
-    <checking_account id="a4">
+    <checking_account id="a4" xmlns="http://acme-bank.com/bank/checking">
       <balance>-125</balance>
     </checking_account>
-    <checking_account id="a5">
+    <checking_account id="a5" xmlns="http://acme-bank.com/bank/checking">
       <balance>325</balance>
     </checking_account>  
   </accounts>

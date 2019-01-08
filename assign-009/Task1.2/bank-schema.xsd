@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-						xmlns:xml="http://www.w3.org/XML/1998/namespace" 
 						xmlns:c="http://acme-bank.com/bank/checking"
 						xmlns:s="http://acme-bank.com/bank/savings"
+						elementFormDefault="qualified"
 						>
 <xsd:import namespace="http://acme-bank.com/bank/savings" schemaLocation="savings.xsd" />
 <xsd:import namespace="http://acme-bank.com/bank/checking" schemaLocation="checking.xsd" />
@@ -13,12 +13,17 @@
 			<xsd:sequence>
 				<xsd:element name="accounts" minOccurs="1" maxOccurs="1">
 					
-							<!-- Reference to the account group defined before -->
 							<xsd:complexType>
+								<xsd:sequence>
 								<xsd:choice>
-									<xsd:element ref="c:checking_account"/>
-									<xsd:element ref="s:savings_account" />
+								<xsd:sequence>
+									<xsd:element ref="s:savings_account" maxOccurs="unbounded" />
+								</xsd:sequence>
+								<xsd:sequence>
+									<xsd:element ref="c:checking_account" maxOccurs="unbounded"/>
+								</xsd:sequence>
 								</xsd:choice>
+								</xsd:sequence>
 							</xsd:complexType>
 						
 					<!-- I'm not sure how to deal with keys and substitutionGroup -->

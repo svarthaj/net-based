@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 						xmlns:xml="http://www.w3.org/XML/1998/namespace"
-						targetNamespace="http://acme-bank.com/bank/savings" >
+						targetNamespace="http://acme-bank.com/bank/savings"
+						elementFormDefault="qualified"
+ >
 <xsd:element name="savings_account">
 	<xsd:complexType>
 		<xsd:sequence>
