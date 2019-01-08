@@ -8,22 +8,20 @@
 <xsd:import namespace="http://acme-bank.com/bank/checking" schemaLocation="checking.xsd" />
 
 	<!-- Used substitutionGroup to represent the two kinds of accounts -->
+
+
   <xsd:element name="bank">
 		<xsd:complexType>
 			<xsd:sequence>
 				<xsd:element name="accounts" minOccurs="1" maxOccurs="1">
 					
 							<xsd:complexType>
-								<xsd:sequence>
-								<xsd:choice>
-								<xsd:sequence>
+							<xsd:sequence>
+								<xsd:choice maxOccurs="unbounded">
 									<xsd:element ref="s:savings_account" maxOccurs="unbounded" />
-								</xsd:sequence>
-								<xsd:sequence>
 									<xsd:element ref="c:checking_account" maxOccurs="unbounded"/>
-								</xsd:sequence>
 								</xsd:choice>
-								</xsd:sequence>
+							</xsd:sequence>
 							</xsd:complexType>
 						
 					<!-- I'm not sure how to deal with keys and substitutionGroup -->
