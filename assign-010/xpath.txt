@@ -1,0 +1,26 @@
+Query A 
+fn:doc ('xmlshop.xml')/Shop/CDs/CD/Title
+fn:doc ('xmlshop.xml')/child::Shop/child::CDs/child::CD/child::Title
+
+Query B
+fn:doc ('xmlshop.xml')/Shop/*/*/Title
+
+
+Query C
+fn:doc ('xmlshop.xml')/Shop/Persons/Person[@ID=/Shop/Books/Book/Authors/Author]/Surname/following-sibling::Forename
+
+Query D 
+
+fn:doc('xmlshop.xml')/Shop/Books/Book[Price>9.0]/Title
+
+Query E
+
+fn:doc('xmlshop.xml')/count(/Shop/Books/Book)
+
+Query F
+
+fn:doc('xmlshop.xml')/sum(/Shop/CDs/CD[Genre="Rock"]/Price)
+
+Query G
+
+fn:doc('xmlshop.xml')/Shop/Books/Book[@ID="BOOK_ID_3"]
