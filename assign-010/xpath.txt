@@ -4,6 +4,7 @@ fn:doc ('xmlshop.xml')/child::Shop/child::CDs/child::CD/child::Title
 
 Query B
 fn:doc ('xmlshop.xml')/Shop/*/*/Title
+fn:doc ('xmlshop.xml')/child::Shop/child::*/child::*/child::Title
 
 
 Query C
