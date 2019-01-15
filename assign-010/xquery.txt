@@ -11,6 +11,11 @@ for $book in fn:doc ('xmlshop.xml')/Shop/Books/Book
 order by $book/@ID descending
 return $book/Title
 
+//Reverse order
+
+for $book at $i in (fn:doc ('xmlshop.xml')/Shop/Books/Book)
+order by $i descending
+return $book/Title
 
 Query B 
 
