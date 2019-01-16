@@ -1,0 +1,25 @@
+Query A
+
+for $person in fn:doc ('xmlshop.xml')/Shop/Persons/Person
+let $albums := $person/Albums/count(*)
+let $films := $person/Films/count(*)
+let $books := $person/Books/count(*)
+let $sum := sum(($albums, $films, $books))
+return ($person,$sum)
+
+Query B
+
+let $nbPerson := count(fn:doc ('xmlshop.xml')//Shop/Persons/Person)
+let $person := fn:doc ('xmlshop.xml')/Shop/Persons/Person
+let $albums := $person/Albums/count(*)
+let $films := $person/Films/count(*)
+let $books := $person/Books/count(*)
+let $sum := sum(($albums, $films, $books))
+return ($sum div $nbPerson, $sum, $nbPerson)
+
+Query C 
+
+//Lead 
+
+let $actorDirector := fn:doc ('xmlshop.xml')/Shop/DVDs/DVD/Actors[Actor=/Shop/DVDs/DVD/Director]
+return ($actorDirector)
