@@ -1,11 +1,11 @@
 Query A
 //Inverse Alphabetical order
 
-for $titles in fn:doc ('xmlshop.xml')/Shop/Books/Book/Title
+for $titles in fn:doc ('xmlshop.xml')/Shop/Books/Book/Title/text()
 order by $titles descending
 return $titles
 
-// With ID but doesnt work as well 
+// With ID but doesnt work as well
 
 for $book in fn:doc ('xmlshop.xml')/Shop/Books/Book
 order by $book/@ID descending
@@ -17,27 +17,23 @@ for $book at $i in (fn:doc ('xmlshop.xml')/Shop/Books/Book)
 order by $i descending
 return $book/Title
 
-Query B 
+Query B
 
 let $cdTitle := fn:doc ('xmlshop.xml')/Shop/CDs/CD/Title
 for $i in (5 to 14)
 return $cdTitle[$i]
 
-Query C 
-//TO change 
+Query C
 
-for $book in fn:doc ('xmlshop.xml')/Shop/Books/Book
-let $index := fn:doc ('xmlshop.xml')/Shop/Books/Book[Title="Breaking Dawn"]
-let $newTitle := "Midnight Sun"
-for $i in ($index+1 to 22)
-return $book/Title[$i]/$newTitle
+for $title at $i in fn:doc('xmlshop.xml')/Shop/Books/Book/Title/text()
+return if ($title = "Breaking Dawn") then ($title, "Midnight Sun") else ($title)
 
-Query D 
+Query D
 
 for $price in fn:distinct-values(fn:doc ('xmlshop.xml')/Shop/*/*/Price)
 return $price
 
-Query E 
+Query E
 
 let $cd := fn:doc('xmlshop.xml')/Shop/CDs/CD
 return $cd
@@ -45,7 +41,7 @@ return $cd
 let $cd := fn:data(fn:doc('xmlshop.xml')/Shop/CDs/CD)
 return $cd //returns all the text raw
 
-Query F 
+Query F
 
 let $nameBand := fn:distinct-values(fn:doc('xmlshop.xml')/Shop/CDs/CD/Band/Name)
 let $nameCompany := fn:distinct-values(fn:doc('xmlshop.xml')/Shop/Companies/Company/Name)
