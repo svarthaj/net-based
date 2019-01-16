@@ -1,4 +1,4 @@
-Query A 
+Query A
 fn:doc ('xmlshop.xml')/Shop/CDs/CD/Title
 fn:doc ('xmlshop.xml')/child::Shop/child::CDs/child::CD/child::Title
 
@@ -8,9 +8,9 @@ fn:doc ('xmlshop.xml')/child::Shop/child::*/child::*/child::Title
 
 
 Query C
-fn:doc ('xmlshop.xml')/Shop/Persons/Person[@ID=/Shop/Books/Book/Authors/Author]/Surname/following-sibling::Forename
+fn:doc('xmlshop.xml')/child::Shop/child::Persons/child::Person[@ID=/child::Shop/child::Books/descendant::Authors/child::Author/text()]
 
-Query D 
+Query D
 
 fn:doc('xmlshop.xml')/Shop/Books/Book[Price>9.0]/Title
 
