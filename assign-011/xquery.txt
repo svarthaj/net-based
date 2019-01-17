@@ -19,7 +19,14 @@ return ($sum div $nbPerson, $sum, $nbPerson)
 
 Query C 
 
-//Lead 
+for $actor in fn:distinct-values(fn:doc ('xmlshop.xml')/Shop/DVDs/DVD/Actors/Actor)
+let $director := fn:doc ('xmlshop.xml')/Shop/DVDs/DVD/Director
+where $actor = $director
+return ($actor)
 
-let $actorDirector := fn:doc ('xmlshop.xml')/Shop/DVDs/DVD/Actors[Actor=/Shop/DVDs/DVD/Director]
-return ($actorDirector)
+Query D 
+//Works but only in our case so it's not what's expected
+let $dvdComp := fn:distinct-values(fn:doc('xmlshop.xml')/Shop/DVDs/DVD/Distributor)
+for $cdComp in fn:distinct-values(fn:doc('xmlshop.xml')/Shop/CDs/CD/Distributor)
+where $cdComp != $dvdComp[1]
+return fn:distinct-values($cdComp)
