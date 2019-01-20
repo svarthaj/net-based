@@ -17,16 +17,66 @@ let $books := $person/Books/count(*)
 let $sum := sum(($albums, $films, $books))
 return ($sum div $nbPerson, $sum, $nbPerson)
 
-Query C 
+Query C
 
 for $actor in fn:distinct-values(fn:doc ('xmlshop.xml')/Shop/DVDs/DVD/Actors/Actor)
 let $director := fn:doc ('xmlshop.xml')/Shop/DVDs/DVD/Director
 where $actor = $director
 return ($actor)
 
-Query D 
+Query D
 //Works but only in our case so it's not what's expected
 let $dvdComp := fn:distinct-values(fn:doc('xmlshop.xml')/Shop/DVDs/DVD/Distributor)
 for $cdComp in fn:distinct-values(fn:doc('xmlshop.xml')/Shop/CDs/CD/Distributor)
 where $cdComp != $dvdComp[1]
 return fn:distinct-values($cdComp)
+
+Query E
+
+for $cd in fn:doc('xmlshop.xml')/Shop/CDs/CD
+let $company := fn:doc('xmlshop.xml')//Companies/Company[@ID = $cd/Distributor]
+where fn:exists($company/GermanAddress)
+return $cd//Member
+
+Query F
+
+for $genre in fn:distinct-values(fn:doc('xmlshop.xml')//CD/Genre)
+let $avg := avg(fn:doc('xmlshop.xml')//CD[Genre = $genre]//Price)
+return concat($genre,' ', $avg)
+
+Query G
+
+for $person in fn:doc('xmlshop.xml')//Persons/Person
+let $cds := sum(fn:doc('xmlshop.xml')//CD[@ID = $person//Album]//Price)
+let $dvds := sum(fn:doc('xmlshop.xml')//DVD[@ID = $person//Film]//Price)
+let $books := sum(fn:doc('xmlshop.xml')//Book[@ID = $person//Book]//Price)
+let $sum := sum(($cds, $dvds, $books))
+order by $sum descending, $person/Surname ascending
+return concat($sum, ' ', $person//Surname/text())
+
+Query H
+
+//easy version without product detail
+let $price := fn:doc('xmlshop.xml')//Price
+return min($price)
+
+//complete version
+
+Query I
+
+let $type := 'cd'
+
+let $minbook := min(fn:doc('xmlshop.xml')//Books//Price)
+let $mincd := min(fn:doc('xmlshop.xml')//CDs//Price)
+let $mindvd := min(fn:doc('xmlshop.xml')//DVDs//Price)
+return
+if ($type = 'book')
+then concat($type, ' ', $minbook)
+else if ($type = 'cd')
+then concat($type, ' ', $mincd)
+else if ($type = 'dvd')
+then concat($type, ' ', $mindvd)
+else 'null'
+
+
+
