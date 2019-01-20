@@ -78,5 +78,106 @@ else if ($type = 'dvd')
 then concat($type, ' ', $mindvd)
 else 'null'
 
+Query J
+
+for $person in fn:doc('xmlshop.xml')//Persons/Person
+let $bookcount := $person/Books/count(*)
+
+return
+if ($bookcount > 1)
+then (concat($person/Forename, " ", $person/Surname), $person/Books)
+else ()
+
+Query K
+
+<QueryResult>{
+for $person in fn:doc('xmlshop.xml')//Persons/Person
+for $bookID at $i in $person//Book
+let $bookData:= fn:doc('xmlshop.xml')//Books/Book[@ID = $bookID]
+let $bookcount := $person/Books/count(*)
+
+return
+if ($bookcount > 1)
+then (<Position>{$bookData//Title}{$bookData//Price}</Position>)
+else ()}
+</QueryResult>
+
+Query L
+
+<QueryResult>{
+for $person in fn:doc('xmlshop.xml')//Persons/Person
+for $bookID at $i in $person//Book
+let $bookData:= fn:doc('xmlshop.xml')//Books/Book[@ID = $bookID]
+let $bookcount := $person/Books/count(*)
+order by $bookData/Title descending
+return
+if ($bookcount > 1)
+then (<Position>{$bookData//Title}{$bookData//Price}</Position>)
+else ()}
+</QueryResult>
+
+Query M
+
+<QueryResult>{
+let $sorted := for $person in fn:doc('xmlshop.xml')//Persons/Person
+for $bookID at $i in $person//Book
+let $bookData:= fn:doc('xmlshop.xml')//Books/Book[@ID = $bookID]
+let $bookcount := $person/Books/count(*)
+order by $bookData/Title descending
+return
+if ($bookcount > 1)
+then ($bookData)
+else ()
+
+for $book at $i in $sorted
+return <Position ID='{$i}'>{$book//Title}{$book//Price}</Position>
+}</QueryResult>
+
+Query N
+
+let $sorted := for $person in fn:doc('xmlshop.xml')//Persons/Person
+for $bookID at $i in $person//Book
+let $bookData:= fn:doc('xmlshop.xml')//Books/Book[@ID = $bookID]
+let $bookcount := $person/Books/count(*)
+order by $bookData/Title descending
+return
+if ($bookcount > 1)
+then ($bookData)
+else ()
+
+let $total := <PriceTotal>{sum($sorted//Price)}</PriceTotal>
+
+let $numbered := for $book at $i in $sorted
+return <Position ID='{$i}'>{$book//Title}{$book//Price}</Position>
+
+return <QueryResult>{
+let $final := ($numbered, $total)
+return $final
+}</QueryResult>
+
+Query O
+
+let $sorted := for $person in fn:doc('xmlshop.xml')//Persons/Person
+for $bookID at $i in $person//Book
+let $bookData:= fn:doc('xmlshop.xml')//Books/Book[@ID = $bookID]
+let $bookcount := $person/Books/count(*)
+order by $bookData/Title descending
+return
+if ($bookcount > 1)
+then ($bookData)
+else ()
+
+let $numbered := for $book at $i in $sorted
+return
+if($book//Price > 30)
+then (<Position ID='{$i}'>{$book//Title}<Price>{$book//Price*0.9}</Price></Position>)
+else (<Position ID='{$i}'>{$book//Title}{$book//Price}</Position>)
+
+let $total := <PriceTotal>{sum($numbered//Price)}</PriceTotal>
+
+return <QueryResult>{
+let $final := ($numbered, $total)
+return $final
+}</QueryResult>
 
 
