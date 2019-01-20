@@ -56,36 +56,64 @@ return concat($sum, ' ', $person//Surname/text())
 
 Query H
 
-//easy version without product detail
-let $price := fn:doc('xmlshop.xml')//Price
-return min($price)
+//first get all products and find cheapest price
+let $b := fn:doc('xmlshop.xml')/Shop/Books/Book
+let $c := fn:doc('xmlshop.xml')//CDs/CD
+let $d := fn:doc('xmlshop.xml')//DVDs/DVD
+let $min := min(fn:doc('xmlshop.xml')//Price)
 
-//complete version
+//then look in each product collection for a match with the cheapest price
+let $mb := for $i in $b
+return if ($i//Price = $min) then ($i) else ()
+let $mc := for $i in $c
+return if ($i//Price = $min) then ($i) else ()
+let $md := for $i in $d
+return if ($i//Price = $min) then ($i) else ()
+
+// return a join of all cheapest products
+return ($mb, $mc, $md)
 
 Query I
 
-let $type := 'cd'
+//this is the type input
+let $type := 'dvd'
 
+//get all product collectoins and find the cheapest price in each collection
+let $b := fn:doc('xmlshop.xml')/Shop/Books/Book
+let $c := fn:doc('xmlshop.xml')//CDs/CD
+let $d := fn:doc('xmlshop.xml')//DVDs/DVD
 let $minbook := min(fn:doc('xmlshop.xml')//Books//Price)
 let $mincd := min(fn:doc('xmlshop.xml')//CDs//Price)
 let $mindvd := min(fn:doc('xmlshop.xml')//DVDs//Price)
+
+//find the match to the cheapest price in each collection
+let $mb := for $i in $b
+return if ($i//Price = $minbook) then ($i) else ()
+let $mc := for $i in $c
+return if ($i//Price = $mincd) then ($i) else ()
+let $md := for $i in $d
+return if ($i//Price = $mindvd) then ($i) else ()
+
+//simple switch to return the desired type
 return
 if ($type = 'book')
-then concat($type, ' ', $minbook)
+then $mb
 else if ($type = 'cd')
-then concat($type, ' ', $mincd)
+then $mc
 else if ($type = 'dvd')
-then concat($type, ' ', $mindvd)
+then $md
 else 'null'
 
 Query J
 
 for $person in fn:doc('xmlshop.xml')//Persons/Person
+for $bookID at $i in $person//Book
+let $bookData:= fn:doc('xmlshop.xml')//Books/Book[@ID = $bookID]
 let $bookcount := $person/Books/count(*)
 
 return
 if ($bookcount > 1)
-then (concat($person/Forename, " ", $person/Surname), $person/Books)
+then ($bookData//Title)
 else ()
 
 Query K
