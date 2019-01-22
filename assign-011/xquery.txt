@@ -31,6 +31,12 @@ for $cdComp in fn:distinct-values(fn:doc('xmlshop.xml')/Shop/CDs/CD/Distributor)
 where $cdComp != $dvdComp[1]
 return fn:distinct-values($cdComp)
 
+//The good one
+let $cd := fn:doc('xmlshop.xml')/Shop/CDs/CD
+for $company in fn:doc('xmlshop.xml')//Companies/Company[@ID = $cd/Distributor]
+where not(fn:exists($company//Film))
+return $company
+
 Query E
 
 for $cd in fn:doc('xmlshop.xml')/Shop/CDs/CD
@@ -117,7 +123,7 @@ then ($bookData//Title)
 else ()
 
 Query K
-
+/* Book count > 0 to provide all books ?*/
 <QueryResult>{
 for $person in fn:doc('xmlshop.xml')//Persons/Person
 for $bookID at $i in $person//Book
