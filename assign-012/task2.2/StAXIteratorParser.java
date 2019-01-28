@@ -16,6 +16,7 @@ public class StAXIteratorParser {
             factory.setProperty("javax.xml.stream.isNamespaceAware", false);
 
             XMLEventReader reader =factory.createXMLEventReader(new FileReader(new File("scientists.xml")));
+            // Create the QName variables to get the attributes
             QName born = new QName("born");
             QName deceased = new QName("deceased");
             while(reader.hasNext()) {
@@ -47,4 +48,5 @@ public class StAXIteratorParser {
     }
 }
 
-/* I would say both solutions are easy to implement but this one might be more efficient than the DOM solution */
+/* I would say both solutions are easy to implement but this one might be more efficient than the DOM solution 
+Also we can't pick any of the element with StAX, we have to do it in the document order so the attributes come before the names...*/
